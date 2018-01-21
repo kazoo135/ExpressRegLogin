@@ -1,12 +1,18 @@
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: '23.229.238.197',
+    port: '3306',
+    user: 'mcaruso',
+    password: 'Chinaweb1',
+    database: 'muzic_user'
 })
 
+connection.connect();
+
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+  });
 
 module.exports = connection; 

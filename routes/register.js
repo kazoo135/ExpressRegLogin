@@ -18,12 +18,17 @@ router.post('/register', function(req, res){
     console.log(password);
 
  var db = require('../db.js');
- db.connect();
 
  db.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error;
     console.log('The solution is: ', results[0].solution);
   });
+
+  res.render('register',{
+      projectTitle: 'Reiser Muzic',
+      pageTitle:'Reg complete',
+      pageId: 'regcomplete'
+  })
 })
 
 module.exports = router;
