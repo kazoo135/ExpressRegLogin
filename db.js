@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+
 var connection = mysql.createConnection({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -7,16 +8,5 @@ var connection = mysql.createConnection({
     database: process.env.DB_NAME,
 })
 
-connection.connect(); 
 
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) {
-        console.log(error.message);
-        console.log(error.sqlState);
-        throw error;
-    }else{ 
-        console.log('The solution is: ', results[0].solution);
-    }
-  });
-   
-  connection.end();
+module.exports = connection; 
