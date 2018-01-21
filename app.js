@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express(); 
 var mysql = require('mysql');
-var dotenv = require('dotenv');
+var dotenv = require('dotenv').config();
 var bodyParser = require('body-parser');
 
 //set variables
