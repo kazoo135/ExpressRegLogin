@@ -26,7 +26,7 @@ router.post('/register', function(req, res){
 
   res.render('register',{
       projectTitle: 'Reiser Muzic',
-      pageTitle:'Reg complete',
+      pageTitle:'Registration complete',
       pageId: 'regcomplete'
   })
 })
