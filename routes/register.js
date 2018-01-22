@@ -24,7 +24,7 @@ router.post('/register', function(req, res){
     
     const errors = req.validationErrors();
 
-    if(error){
+    if(errors){
         console.log(`Errors: ${JSON.stringify(errors)}`);
         res.render('register',{
             projectTitle: 'Reiser Muzic',
