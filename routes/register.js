@@ -37,35 +37,36 @@ router.post('/register', function(req, res){
             pageId: 'regerror',
             error: errors
         })
-    }
-    
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
-    const game_id = gameId(); 
-    console.log(username);
-    console.log(email);
-    console.log(password);
-
- var db = require('../db.js');
-
- db.query('INSERT INTO users (game_id,username,email,password) VALUES (?,?, ?,?)', 
- [game_id, username, email, password],
-  function (error, results, fields) {
-    if (error){
-        console.log(error.message);
-        console.log(error.sqlState);
-        throw error;
     }else{
-        res.render('register',{
-            projectTitle: 'Reiser Muzic',
-            pageTitle:'Registration complete',
-            pageId: 'regcomplete'
-        })
-    } 
-   
-  });
+        const username = req.body.username;
+        const email = req.body.email;
+        const password = req.body.password;
+        const game_id = gameId(); 
+        console.log(username);
+        console.log(email);
+        console.log(password);
+    
+     var db = require('../db.js');
+    
+     db.query('INSERT INTO users (game_id,username,email,password) VALUES (?,?, ?,?)', 
+     [game_id, username, email, password],
+      function (error, results, fields) {
+        if (error){
+            console.log(error.message);
+            console.log(error.sqlState);
+            throw error;
+        }else{
+            res.render('register',{
+                projectTitle: 'Reiser Muzic',
+                pageTitle:'Registration complete',
+                pageId: 'regcomplete'
+            })
+        } 
+       
+      }); //end of db.query
+    }// end of outer else
+    
 
-})
+})//end of req.post
 
 module.exports = router;
