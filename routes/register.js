@@ -18,6 +18,11 @@ var gameId = function(){
 }
 router.post('/register', function(req, res){
     req.checkBody('username', 'Username cannot be empty').notEmpty();
+    req.checkBody('username', 'Username must be 4-15 characters long').len(4,15);
+    req.checkBody('email', 'The email you entered is invaliid').isEmail();
+    req.checkBody('email', 'Email address must be 4-100 characters long').len(4, 100);
+    req.checkBody('password', 'Password must be 8-100 characters long').len(8, 100);
+    req.checkBody('passwordMatch', 'Passwords must match ').equals(req.body.password);
 
     req.checkBody('email')
     req.checkBody('password')
@@ -29,7 +34,8 @@ router.post('/register', function(req, res){
         res.render('register',{
             projectTitle: 'Reiser Muzic',
             pageTitle:'Registration Error',
-            pageId: 'regerror'
+            pageId: 'regerror',
+            error: errors
         })
     }
     
