@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router(); 
+var expressValidator = require('express-validator');
 
 router.get('/register', function(req, res){
     res.render('register', {
@@ -16,10 +17,26 @@ var gameId = function(){
     return randId 
 }
 router.post('/register', function(req, res){
-    var username = req.body.username;
-    var email = req.body.email;
-    var password = req.body.password;
-    var game_id = gameId(); 
+    req.checkBody('username', 'Username cannot be empty').notEmpty();
+
+    req.checkBody('email')
+    req.checkBody('password')
+    
+    const errors = req.validationErrors();
+
+    if(error){
+        console.log(`Errors: ${JSON.stringify(errors)}`);
+        res.render('register',{
+            projectTitle: 'Reiser Muzic',
+            pageTitle:'Registration Error',
+            pageId: 'regerror'
+        })
+    }
+    
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
+    const game_id = gameId(); 
     console.log(username);
     console.log(email);
     console.log(password);

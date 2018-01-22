@@ -3,6 +3,7 @@ var app = express();
 var mysql = require('mysql');
 var dotenv = require('dotenv').config();
 var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
 
 //set variables
 app.set('view engine', 'ejs');
@@ -13,6 +14,8 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json())
+//validator must be directly after body-parser 
+app.use(expressValidator());
 
 
 // use routes
