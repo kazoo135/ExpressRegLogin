@@ -4,6 +4,8 @@ var mysql = require('mysql');
 var dotenv = require('dotenv').config();
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 //set variables
 app.set('view engine', 'ejs');

@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router(); 
 var expressValidator = require('express-validator');
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 router.get('/register', function(req, res){
     res.render('register', {
@@ -47,23 +49,26 @@ router.post('/register', function(req, res){
         console.log(password);
     
      var db = require('../db.js');
-    
-     db.query('INSERT INTO users (game_id,username,email,password) VALUES (?,?, ?,?)', 
-     [game_id, username, email, password],
-      function (error, results, fields) {
-        if (error){
-            console.log(error.message);
-            console.log(error.sqlState);
-            throw error;
-        }else{
-            res.render('register',{
-                projectTitle: 'Reiser Muzic',
-                pageTitle:'Registration complete',
-                pageId: 'regcomplete'
-            })
-        } 
-       
-      }); //end of db.query
+     bcrypt.hash( password, saltRounds, function(err, hash) {
+
+        db.query('INSERT INTO users (game_id,username,email,password) VALUES (?,?, ?,?)', 
+        [game_id, username, email, hash],
+         function (error, results, fields) {
+           if (error){
+               console.log(error.message);
+               console.log(error.sqlState);
+               throw error;
+           }else{
+               res.render('register',{
+                   projectTitle: 'Reiser Muzic',
+                   pageTitle:'Registration complete',
+                   pageId: 'regcomplete'
+               })
+           } 
+          
+         }); //end of db.query
+      });//end of bcrypt
+
     }// end of outer else
     
 
