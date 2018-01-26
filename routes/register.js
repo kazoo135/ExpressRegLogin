@@ -3,6 +3,7 @@ var router = express.Router();
 var expressValidator = require('express-validator');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
+var passport = require('passport');
 
 router.get('/register', function(req, res){
     res.render('register', {
@@ -59,14 +60,19 @@ router.post('/register', function(req, res){
                console.log(error.sqlState);
                throw error;
            }else{
-               res.render('register',{
-                   projectTitle: 'Reiser Muzic',
-                   pageTitle:'Registration complete',
-                   pageId: 'regcomplete'
-               })
-           } 
-          
-         }); //end of db.query
+               db.query('SELECT LAST_INSERT_ID() AS user_id', function(err, results, fields){
+                    if(error) throw error;
+
+                    const user_id = results[0];
+                    console.log(results[0])
+                    req.logIn(user_id, function(err){
+                        //successful login redirect to home page
+                        res.redirect('/');
+                        
+                    });//end of passport login func
+               });//end of SELECT query
+           }//end of inner else 
+         }); //end of INSERT query 
       });//end of bcrypt
 
     }// end of outer else
@@ -74,4 +80,10 @@ router.post('/register', function(req, res){
 
 })//end of req.post
 
+passport.serializeUser(function(user_id, done) {
+        done(null, user_id);
+});
+passport.deserializeUser(function(user_id, done) {
+    done(null, user_id);
+});
 module.exports = router;

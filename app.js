@@ -4,8 +4,10 @@ var mysql = require('mysql');
 var dotenv = require('dotenv').config();
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
-var session = require('express-session');
 
+//authentication packages
+var session = require('express-session');
+var passport = require('passport');
 
 //set variables
 app.set('view engine', 'ejs');
@@ -18,12 +20,15 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json())
 //validator must be directly after body-parser 
 app.use(expressValidator());
+// initialize express-session
 app.use(session({
     secret: 'ngjgppeidmkfkfks',
     resave: false,
     saveUninitialized: false,
     // cookie: { secure: true}
 }))
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // use routes
