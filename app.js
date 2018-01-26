@@ -4,6 +4,7 @@ var mysql = require('mysql');
 var dotenv = require('dotenv').config();
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
+var session = require('express-session');
 
 
 //set variables
@@ -17,6 +18,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json())
 //validator must be directly after body-parser 
 app.use(expressValidator());
+app.use(session({
+    secret: 'ngjgppeidmkfkfks',
+    resave: false,
+    saveUninitialized: false,
+    // cookie: { secure: true}
+}))
 
 
 // use routes
