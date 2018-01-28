@@ -9,6 +9,8 @@ var expressValidator = require('express-validator');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
+var LocalStrategy = require('passport-local');
+
 
 //set variables
 app.set('view engine', 'ejs');
@@ -41,11 +43,18 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
-
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        console.log(username);
+        console.log(password);
+        return done(null, false);
+    }
+  ));
 
 // use routes
 app.use(require('./routes/index'));
 app.use(require('./routes/register'));
+
 
 
 

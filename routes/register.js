@@ -22,6 +22,13 @@ router.get('/login', function(req, res){
     }); 
 })
 
+router.post('/login', passport.authenticate('local',
+{ 
+    successRedirect: '/profile', 
+    failureRedirect: '/login'
+})//end of authenticate params
+);
+
 router.get('/profile', authenticationMiddleware(), function(req, res){
 
     res.render('profile', {
