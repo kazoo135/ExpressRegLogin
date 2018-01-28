@@ -11,7 +11,26 @@ router.get('/register', function(req, res){
         pageTitle: 'Register',
         pageId: 'register'
     }); 
+});
+
+router.get('/login', function(req, res){
+
+    res.render('login', {
+        projectTitle: 'Reiser Muzic',
+        pageTitle: 'Login',
+        pageId: 'login'
+    }); 
 })
+
+router.get('/profile', authenticationMiddleware(), function(req, res){
+
+    res.render('profile', {
+        projectTitle: 'Reiser Muzic',
+        pageTitle: 'Profile',
+        pageId: 'profile'
+    }); 
+})
+
 
 //testing function for eventual game identification number
 var gameId = function(){
@@ -86,4 +105,19 @@ passport.serializeUser(function(user_id, done) {
 passport.deserializeUser(function(user_id, done) {
     done(null, user_id);
 });
+
+function authenticationMiddleware(){
+    return (req, res, next) => {
+        console.log(`
+        req.session.passport.user: ${JSON.stringify(req.session.passport)}
+        `);
+
+        if(req.isAuthenticated()) {
+            return next();
+        }else{
+            res.redirect(302,'/login');
+        }   
+    }
+}
+
 module.exports = router;
