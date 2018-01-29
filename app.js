@@ -49,31 +49,29 @@ passport.use(new LocalStrategy(
         console.log(username);
         console.log(password);
         const db = require('./db.js');
-        db.query('SELECT user_id password FROM users WHERE username = ?',[username],function(error, results, fields){
+        db.query('SELECT user_id, password FROM users WHERE username = ?',[username],function(error, results, fields){
             //db connection error
-            if(error) { done(error) }
+            if(error) { done(error); }
 
             //if results is empty, no match found 
             if(results.length === 0 ){
                 done(null, error);//tell user authentification failed
+            }else{
+                console.log(results[0].password.toString());
+                
+                const hash = results[0].password.toString();
+    
+                bcrypt.compare(password, hash, function(err, response){
+                    if(response === true){
+                    return done(null, { user_id: results[0].user_id }); //succesful lgoin
+                    }else{
+                        return done(null, false)//authentification failed
+                    }
+                });//end of bcrypt
             }
-            console.log(results[0].password.toString());
-            
-            const hash = results[0].password.toString();
-
-            bcrypt.compare(password, hash, function(err, response){
-                if(response === true){
-                return done(null, { user_id: results[0].user_id }); //succesful lgoin
-                }else{
-                    return done(null, false)//authentification failed
-                }
-
-            });
-
-
-    })//end of query
+    });//end of query
     }
-  ));
+  ));//end of passport.use()
 
 // use routes
 app.use(require('./routes/index'));
