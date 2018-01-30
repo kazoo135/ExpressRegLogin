@@ -74,6 +74,10 @@ passport.use(new LocalStrategy(
   ));//end of passport.use()
 
 // use routes
+app.use(function(req, res, next){
+    app.locals.isAuthenticated = req.isAuthenticated();
+    next();
+});
 app.use(require('./routes/index'));
 app.use(require('./routes/register'));
 
