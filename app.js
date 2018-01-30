@@ -10,6 +10,7 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
+var bcrypt = require('bcrypt');
 
 
 //set variables
@@ -47,11 +48,36 @@ passport.use(new LocalStrategy(
     function(username, password, done) {
         console.log(username);
         console.log(password);
-        return done(null, false);
+        const db = require('./db.js');
+        db.query('SELECT user_id, password FROM users WHERE username = ?',[username],function(error, results, fields){
+            //db connection error
+            if(error) { done(error); }
+
+            //if results is empty, no match found 
+            if(results.length === 0 ){
+                done(null, error);//tell user authentification failed
+            }else{
+                console.log(results[0].password.toString());
+                
+                const hash = results[0].password.toString();
+    
+                bcrypt.compare(password, hash, function(err, response){
+                    if(response === true){
+                    return done(null, { user_id: results[0].user_id }); //succesful lgoin
+                    }else{
+                        return done(null, false)//authentification failed
+                    }
+                });//end of bcrypt
+            }
+    });//end of query
     }
-  ));
+  ));//end of passport.use()
 
 // use routes
+app.use(function(req, res, next){
+    app.locals.isAuthenticated = req.isAuthenticated();
+    next();
+});
 app.use(require('./routes/index'));
 app.use(require('./routes/register'));
 
