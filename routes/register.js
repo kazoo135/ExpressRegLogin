@@ -31,6 +31,7 @@ router.post('/login', passport.authenticate('local',
 { 
     successRedirect: '/profile', 
     failureRedirect: '/login'
+    // add flash() msg here??
 })//end of authenticate params
 );
 
@@ -127,7 +128,7 @@ function authenticationMiddleware(){
         if(req.isAuthenticated()) {
             return next();
         }else{
-            res.redirect(302,'/login');
+            res.redirect(302,'/login');// add flssh() msg
         }   
     }
 }

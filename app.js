@@ -11,6 +11,7 @@ var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var bcrypt = require('bcrypt');
+var flash = require('connect-flash');
 
 
 //set variables
@@ -44,6 +45,7 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 passport.use(new LocalStrategy(
     function(username, password, done) {
         console.log(username);
@@ -65,7 +67,7 @@ passport.use(new LocalStrategy(
                     if(response === true){
                     return done(null, { user_id: results[0].user_id }); //succesful lgoin
                     }else{
-                        return done(null, false)//authentification failed
+                        return done(null, false);//authentification failed add flash() msg
                     }
                 });//end of bcrypt
             }
