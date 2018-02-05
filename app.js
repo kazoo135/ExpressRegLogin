@@ -57,7 +57,7 @@ passport.use(new LocalStrategy(
 
             //if results is empty, no match found 
             if(results.length === 0 ){
-                done(null, error);//tell user authentification failed
+                done(null, error);//tell user authentification failed username or password mismatch
             }else{
                 console.log(results[0].password.toString());
                 
@@ -67,7 +67,7 @@ passport.use(new LocalStrategy(
                     if(response === true){
                     return done(null, { user_id: results[0].user_id }); //succesful lgoin
                     }else{
-                        return done(null, false);//authentification failed add flash() msg
+                        return done(null, false);//authentification failed add flash() msg invalid password
                     }
                 });//end of bcrypt
             }
@@ -76,6 +76,8 @@ passport.use(new LocalStrategy(
   ));//end of passport.use()
 
 // use routes
+
+//set global var for testing if user is logged in (isAuthenticated())
 app.use(function(req, res, next){
     app.locals.isAuthenticated = req.isAuthenticated();
     next();
