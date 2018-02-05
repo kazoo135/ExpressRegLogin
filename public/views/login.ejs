@@ -5,6 +5,9 @@
         <% include template/header.ejs %>
     <div class="container">
         <h1><%= pageTitle %></h1>
+        <% if(message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+        <% } %>
     <form action="/login" method="POST">
         <div class="form-group">
             <label for="username">Username</label>

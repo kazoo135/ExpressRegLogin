@@ -46,8 +46,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-passport.use(new LocalStrategy(
-    function(username, password, done) {
+passport.use(new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+},
+    function(req, username, password, done) {
         console.log(username);
         console.log(password);
         const db = require('./db.js');
@@ -57,7 +61,7 @@ passport.use(new LocalStrategy(
 
             //if results is empty, no match found 
             if(results.length === 0 ){
-                done(null, error);//tell user authentification failed username or password mismatch
+                   return done(null, error, req.flash('loginMessage','Invalid Username or Password'));//tell user authentification failed username or password mismatch
             }else{
                 console.log(results[0].password.toString());
                 
@@ -67,7 +71,7 @@ passport.use(new LocalStrategy(
                     if(response === true){
                     return done(null, { user_id: results[0].user_id }); //succesful lgoin
                     }else{
-                        return done(null, false);//authentification failed add flash() msg invalid password
+                        return done(null, false, req.flash('loginMessage','Invalid Username or Password') );//authentification failed add flash() msg invalid password
                     }
                 });//end of bcrypt
             }

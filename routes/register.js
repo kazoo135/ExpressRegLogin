@@ -18,7 +18,8 @@ router.get('/login', function(req, res){
     res.render('login', {
         projectTitle: 'Reiser Muzic',
         pageTitle: 'Login',
-        pageId: 'login'
+        pageId: 'login',
+        message: req.flash('loginMessage') // set flash msg as property
     }); 
 })
 
@@ -30,8 +31,9 @@ router.get('/logout', function(req, res){
 router.post('/login', passport.authenticate('local',
 { 
     successRedirect: '/profile', 
-    failureRedirect: '/login'
-    // add flash() msg here??
+    failureRedirect: '/login',
+    failureFlash: true // set login failure msg true
+
 })//end of authenticate params
 );
 
