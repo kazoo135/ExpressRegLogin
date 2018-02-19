@@ -58,12 +58,10 @@ router.post('/register', function(req, res){
     req.checkBody('username', 'Username must be 4-15 characters long').len(4,15);
     req.checkBody('email', 'The email you entered is invaliid').isEmail();
     req.checkBody('email', 'Email address must be 4-100 characters long').len(4, 100);
-    req.checkBody('password', 'Password must be 8-100 characters long').len(8, 15);
-    req.checkBody('password', 'Password must be at least 8 characters long and should have at least one uppercase, one lowercase, one digit, and one special character').matches(/^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=\\|:[\];<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,15}$/);
+    req.checkBody('password', 'Password must be 8-15 characters long').len(8, 15);
+    req.checkBody('password', 'Password must include one uppercase, one lowercase, one number, and one special character').matches(/^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=\\|:[\];<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,15}$/);
     req.checkBody('passwordMatch', 'Passwords must match ').equals(req.body.password);
 
-    req.checkBody('email')
-    req.checkBody('password')
     
     const errors = req.validationErrors();
 
