@@ -38,12 +38,31 @@ router.post('/login', passport.authenticate('local',
 );
 
 router.get('/profile', authenticationMiddleware(), function(req, res){
+//when i return profile i want to include user data
+const db = require('../db.js');
+const user_id = req.session.passport.user.user_id;
+var userData = new Object();
+db.query('SELECT * FROM users WHERE user_id = ?',[user_id], function(err, results, fields){
+    if(err) throw err;
 
-    res.render('profile', {
-        projectTitle: 'Reiser Muzic',
-        pageTitle: 'Profile',
-        pageId: 'profile'
-    }); 
+    if(results.length == 0){
+        throw err;
+    }else{
+        userData ={
+            email:results[0].email,
+            game:results[0].game_id
+        }
+        console.log("user email: " + results[0].email)
+        console.log("User Game: " + results[0].game_id)
+        res.render('profile', {
+            projectTitle: 'Reiser Muzic',
+            pageTitle: 'Profile',
+            pageId: 'profile',
+            user:userData
+        }); 
+    }
+})
+
 })
 
 
@@ -97,7 +116,7 @@ router.post('/register', function(req, res){
                     if(error) throw error;
 
                     const user_id = results[0];
-                    console.log(results[0])
+                    console.log(results[0]);
                     req.logIn(user_id, function(err){
                         //successful login redirect to home page
                         res.redirect('/');
@@ -117,7 +136,8 @@ passport.serializeUser(function(user_id, done) {
         done(null, user_id);
 });
 passport.deserializeUser(function(user_id, done) {
-    done(null, user_id);
+
+        done(null,user_id )
 });
 
 function authenticationMiddleware(){
@@ -125,7 +145,6 @@ function authenticationMiddleware(){
         console.log(`
         req.session.passport.user: ${JSON.stringify(req.session.passport)}
         `);
-
         if(req.isAuthenticated()) {
             return next();
         }else{

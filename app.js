@@ -19,6 +19,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'public/views');
 app.set('port', process.env.PORT || 3000);
 
+
 //use packages and functions
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -55,7 +56,7 @@ passport.use(new LocalStrategy({
         console.log(username);
         console.log(password);
         const db = require('./db.js');
-        db.query('SELECT user_id, password FROM users WHERE username = ?',[username],function(error, results, fields){
+        db.query('SELECT * FROM users WHERE username = ?',[username],function(error, results, fields){
             //db connection error
             if(error) { done(error); }
 
@@ -69,6 +70,7 @@ passport.use(new LocalStrategy({
     
                 bcrypt.compare(password, hash, function(err, response){
                     if(response === true){
+
                     return done(null, { user_id: results[0].user_id }); //succesful lgoin
                     }else{
                         return done(null, false, req.flash('loginMessage','Invalid Username or Password') );//authentification failed add flash() msg invalid password
