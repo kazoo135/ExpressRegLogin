@@ -42,29 +42,26 @@ router.get('/profile', authenticationMiddleware(), function(req, res){
 const db = require('../db.js');
 const user_id = req.session.passport.user.user_id;
 var userData = new Object();
-db.query('SELECT * FROM users WHERE user_id = ?',[user_id], function(err, results, fields){
-    if(err) throw err;
-
-    if(results.length == 0){
-        throw err;
-    }else{
-        userData ={
-            email:results[0].email,
-            game:results[0].game_id
+    db.query('SELECT * FROM users WHERE user_id = ?',[user_id], function(err, results, userData){
+        if(err) throw err;
+        if(results.length == 0){
+            throw err;
+        }else{
+            userData ={
+                email:results[0].email,
+                game:results[0].game_id
+                }
+            console.log("user email: " + results[0].email);
+            console.log("User Game: " + results[0].game_id);
+            res.render('profile', {
+                projectTitle:'Reiser Muzik',
+                pageTitle:'Profile',
+                pageId:'profile',
+                user: userData
+            });
         }
-        console.log("user email: " + results[0].email)
-        console.log("User Game: " + results[0].game_id)
-        res.render('profile', {
-            projectTitle: 'Reiser Muzic',
-            pageTitle: 'Profile',
-            pageId: 'profile',
-            user:userData
-        }); 
-    }
-})
-
-})
-
+    });//end of sql
+});//end of get profile
 
 //testing function for eventual game identification number
 var gameId = function(){
