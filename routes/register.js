@@ -7,7 +7,7 @@ var passport = require('passport');
 
 router.get('/register', function(req, res){
     res.render('register', {
-        projectTitle: 'Reiser Muzic',
+        projectTitle: 'Tonal-Solutions',
         pageTitle: 'Register',
         pageId: 'register'
     }); 
@@ -16,7 +16,7 @@ router.get('/register', function(req, res){
 router.get('/login', function(req, res){
 
     res.render('login', {
-        projectTitle: 'Reiser Muzic',
+        projectTitle: 'Tonal-Solutions',
         pageTitle: 'Login',
         pageId: 'login',
         message: req.flash('loginMessage') // set flash msg as property
@@ -54,7 +54,7 @@ var userData = new Object();
             console.log("user email: " + results[0].email);
             console.log("User Game: " + results[0].game_id);
             res.render('profile', {
-                projectTitle:'Reiser Muzik',
+                projectTitle:'Tonal-Solutions',
                 pageTitle:'Profile',
                 pageId:'profile',
                 user: userData
@@ -84,7 +84,7 @@ router.post('/register', function(req, res){
     if(errors){
         console.log(`Errors: ${JSON.stringify(errors)}`);
         res.render('register',{
-            projectTitle: 'Reiser Muzic',
+            projectTitle: 'Tonal-Solutions',
             pageTitle:'Registration Error',
             pageId: 'regerror',
             error: errors

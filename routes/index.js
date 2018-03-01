@@ -5,7 +5,7 @@ router.get('/', function(req, res){
     console.log(req.user); //from passport
     console.log(req.isAuthenticated()); //from pasport
     res.render('index', {
-        projectTitle: 'Reiser Muzic',
+        projectTitle: 'Tonal-Solutions',
         pageTitle: 'Home',
         pageId: 'home'
     }); 
