@@ -4,3 +4,5 @@ applications:
   random-route: true
   memory: 256M
   buildpack: nodejs_buildpack
+  command: node app.js
+  domain: mybluemix.net

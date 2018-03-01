@@ -17,7 +17,8 @@ var flash = require('connect-flash');
 //set variables
 app.set('view engine', 'ejs');
 app.set('views', 'public/views');
-var port =  process.env.VCAP_APP_PORT || 8080;
+var port = (process.env.PORT || 3000); 
+
 
 
 //use packages and functions
@@ -94,6 +95,7 @@ app.use(require('./routes/register'));
 
 
 
-app.listen( port, function(){
+app.listen( port,  function(){
     console.log("listening on port " + port);
 })
+
