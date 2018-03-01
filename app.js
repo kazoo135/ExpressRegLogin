@@ -17,7 +17,7 @@ var flash = require('connect-flash');
 //set variables
 app.set('view engine', 'ejs');
 app.set('views', 'public/views');
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.VCAP_APP_PORT || 3000);
 
 
 //use packages and functions
