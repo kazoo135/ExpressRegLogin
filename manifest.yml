@@ -3,3 +3,4 @@ applications:
 - name: tonalsolutions
   random-route: true
   memory: 256M
+  buildpack: nodejs_buildpack
